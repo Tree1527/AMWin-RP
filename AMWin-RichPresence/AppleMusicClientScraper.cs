@@ -403,9 +403,10 @@ namespace AMWin_RichPresence {
                 }
                 nodes.AddRange(node.FindAllChildren());
                 // fallback to prevent this taking too long
-                if (nodes.Count > 25) {
-                    return null;
-                }
+                // sike disabling the fallback
+//                if (nodes.Count > 25) {
+//                    return null;
+//                }
             }
             return null;
         }
