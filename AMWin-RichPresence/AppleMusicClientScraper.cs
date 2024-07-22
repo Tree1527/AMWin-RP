@@ -402,10 +402,11 @@ namespace AMWin_RichPresence {
                     return node;
                 }
                 nodes.AddRange(node.FindAllChildren());
+                // sike removed the below fallback
                 // fallback to prevent this taking too long
-                if (nodes.Count > 25) {
-                    return null;
-                }
+//                if (nodes.Count > 25) {
+//                    return null;
+//                }
             }
             return null;
         }
