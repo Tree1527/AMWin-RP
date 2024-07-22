@@ -90,7 +90,7 @@ namespace AMWin_RichPresence {
                 var thisSongID = info.SongArtist + info.SongName + info.SongAlbum;
                 var webScraper = new AppleMusicWebScraper(info.SongName, info.SongAlbum, info.SongArtist, region);
                 var artists = await webScraper.GetArtistList();
-                var artistRegex = new Regex(@"^(?<artist>[^,&]+)(?:,[\s&]+|[\s&]ft\.?\s+)");
+                var artistRegex = new Regex(@"^(?<artist>.*?)(?:\s*ft\.?|[,&])");
                 var match = artistRegex.Match(info.SongArtist);
                 var artist = Properties.Settings.Default.LastfmScrobblePrimaryArtist ?
                  (artists.FirstOrDefault() ?? (match.Success ? match.Groups["artist"].Value.Trim() : info.SongArtist)) :
