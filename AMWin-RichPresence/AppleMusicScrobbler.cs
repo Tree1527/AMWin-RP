@@ -97,6 +97,15 @@ namespace AMWin_RichPresence {
                  info.SongArtist;;
                 var album = Properties.Settings.Default.LastfmCleanAlbumName ? AlbumCleaner.CleanAlbumName(info.SongAlbum) : info.SongAlbum;
 
+                if (artist == "Chase")
+                {
+                    artist = "Chase & Status";
+                }
+                else if(artist == "Jkyl")
+                {
+                    artist = "Jkyl & Hyde";
+                }
+                
                 if (thisSongID != lastSongID) {
                     lastSongID = thisSongID;
                     elapsedSeconds = 0;
