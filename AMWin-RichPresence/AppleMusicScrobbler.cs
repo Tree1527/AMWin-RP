@@ -43,6 +43,7 @@ namespace AMWin_RichPresence {
         protected Logger? logger;
         protected string serviceName;
         protected string region;
+        protected bool scrobbleInProgress;
 
         public AppleMusicScrobbler(string serviceName, string region, Logger? logger = null) {
             this.serviceName = serviceName;
@@ -89,14 +90,15 @@ namespace AMWin_RichPresence {
             try {
                 var thisSongID = info.SongArtist + info.SongName + info.SongAlbum;
                 var webScraper = new AppleMusicWebScraper(info.SongName, info.SongAlbum, info.SongArtist, region);
+                
+                //tree modified
                 var artists = await webScraper.GetArtistList();
                 var artistRegex = new Regex(@"^(?<artist>.*?)(?:\s*ft\.?|[,&])");
                 var match = artistRegex.Match(info.SongArtist);
                 var artist = Properties.Settings.Default.LastfmScrobblePrimaryArtist ?
                  (artists.FirstOrDefault() ?? (match.Success ? match.Groups["artist"].Value.Trim() : info.SongArtist)) :
                  info.SongArtist;;
-                var album = Properties.Settings.Default.LastfmCleanAlbumName ? AlbumCleaner.CleanAlbumName(info.SongAlbum) : info.SongAlbum;
-
+                 
                 if (artist == "Chase")
                 {
                     artist = "Chase & Status";
@@ -105,10 +107,13 @@ namespace AMWin_RichPresence {
                 {
                     artist = "Jkyl & Hyde";
                 }
-                
+
+                var album = Properties.Settings.Default.LastfmCleanAlbumName ? AlbumCleaner.CleanAlbumName(info.SongAlbum) : info.SongAlbum;
+
                 if (thisSongID != lastSongID) {
                     lastSongID = thisSongID;
                     elapsedSeconds = 0;
+                    scrobbleInProgress = false;
                     hasScrobbled = false;
                     logger?.Log($"[{serviceName} scrobbler] New Song: {lastSongID}");
 
@@ -123,10 +128,16 @@ namespace AMWin_RichPresence {
                         logger?.Log($"[{serviceName} scrobbler] Repeating Song: {lastSongID}");
                     }
 
-                    if (IsTimeToScrobble(info) && !hasScrobbled) {
+                    if (IsTimeToScrobble(info) && !hasScrobbled && !scrobbleInProgress) {
                         logger?.Log($"[{serviceName} scrobbler] Scrobbling: {lastSongID}");
-                        await ScrobbleSong(artist, album, info.SongName);
-                        hasScrobbled = true;
+
+                        try {
+                            scrobbleInProgress = true;
+                            await ScrobbleSong(artist, album, info.SongName);
+                            hasScrobbled = true;
+                        } finally {
+                            scrobbleInProgress = false;
+                        }
                     }
 
                     lastSongProgress = info.CurrentTime ?? 0.0;
