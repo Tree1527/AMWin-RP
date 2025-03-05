@@ -92,11 +92,12 @@ namespace AMWin_RichPresence {
                 var webScraper = new AppleMusicWebScraper(info.SongName, info.SongAlbum, info.SongArtist, region);
                 
                 //tree modified
+                
                 var artists = await webScraper.GetArtistList();
                 var artistRegex = new Regex(@"^(?<artist>.*?)(?:\s*ft\.?|[,&])");
-                var match = artistRegex.Match(info.SongArtist);
+                var artistMatch = artistRegex.Match(info.SongArtist);
                 var artist = Properties.Settings.Default.LastfmScrobblePrimaryArtist ?
-                 (artists.FirstOrDefault() ?? (match.Success ? match.Groups["artist"].Value.Trim() : info.SongArtist)) :
+                 (artists.FirstOrDefault() ?? (artistMatch.Success ? artistMatch.Groups["artist"].Value.Trim() : info.SongArtist)) :
                  info.SongArtist;;
                  
                 if (artist == "Chase")
@@ -107,6 +108,14 @@ namespace AMWin_RichPresence {
                 {
                     artist = "Jkyl & Hyde";
                 }
+
+                var song = info.SongName;
+                var songRegex = new Regex(@"^(?<song>.*?)(?:\s*[\(\[]?(?:ft\.|feat\.))");
+                var songMatch = songRegex.Match(info.SongName);
+                var songName = songMatch.Success ? songMatch.Groups["song"].Value.Trim() : info.SongName;
+
+                //modified till here
+
 
                 var album = Properties.Settings.Default.LastfmCleanAlbumName ? AlbumCleaner.CleanAlbumName(info.SongAlbum) : info.SongAlbum;
 
