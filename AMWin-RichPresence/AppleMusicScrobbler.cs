@@ -1,4 +1,4 @@
-﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using MetaBrainz.ListenBrainz;
@@ -26,7 +26,7 @@ namespace AMWin_RichPresence {
 
     internal class AlbumCleaner {
 
-        private static readonly Regex AlbumCleanerRegex = new Regex(@"\s-\s((Single)|(EP))$", RegexOptions.Compiled);
+        private static readonly Regex AlbumCleanerRegex = new Regex(@"([/-] .*)? ?(Deluxe|Platinum|Acoustic|Acústico).*| [(\[][^()\[\]]*?(Deluxe|Platinum|Acoustic|Live|Ao vivo|Acústico|Version|Edition|From|Radio|ft\.|feat\.|Ft\.|Feat\.)[^()\[\]]*[)\]]|\s-\s((Single)|(EP))$", RegexOptions.Compiled);
 
         public static string CleanAlbumName(string songName) {
             // Remove " - Single" and " - EP"
@@ -90,29 +90,32 @@ namespace AMWin_RichPresence {
             try {
                 var thisSongID = info.SongArtist + info.SongName + info.SongAlbum;
                 var webScraper = new AppleMusicWebScraper(info.SongName, info.SongAlbum, info.SongArtist, region);
-                
+
                 //tree modified
-                
                 var artists = await webScraper.GetArtistList();
-                var artistRegex = new Regex(@"^(?<artist>.*?)(?:\s*ft\.?|[,&])");
-                var artistMatch = artistRegex.Match(info.SongArtist);
-                var artist = Properties.Settings.Default.LastfmScrobblePrimaryArtist ?
-                 (artists.FirstOrDefault() ?? (artistMatch.Success ? artistMatch.Groups["artist"].Value.Trim() : info.SongArtist)) :
-                 info.SongArtist;;
-                 
-                if (artist == "Chase")
-                {
-                    artist = "Chase & Status";
-                }
-                else if(artist == "Jkyl")
-                {
-                    artist = "Jkyl & Hyde";
-                }
+                var artistRegex = new Regex(@"([/-])?(,|&|\sx\s*|\sX\s*|ft|ft\.|Ft|Ft\.) (?!The creator|Hyde|Status|CLYDE).*");
+
+                var cleanedArtist = artistRegex.Replace(info.SongArtist, "").Trim();
+
+                var artist = Properties.Settings.Default.LastfmScrobblePrimaryArtist ? (artists.FirstOrDefault() ?? cleanedArtist) : info.SongArtist;
+
+                /*
+               if (artist == "Chase")
+               {
+                   artist = "Chase & Status";
+               }
+               else if(artist == "Jkyl")
+               {
+                   artist = "Jkyl & Hyde";
+               }
+                */
 
                 var song = info.SongName;
-                var songRegex = new Regex(@"^(?<song>.*?)(?:\s*[\(\[]?(?:ft\.|feat\.))");
-                var songMatch = songRegex.Match(info.SongName);
-                var songName = songMatch.Success ? songMatch.Groups["song"].Value.Trim() : info.SongName;
+                var songRegex = new Regex(@"([/-].*)? ?(Deluxe|Platinum|Acoustic|Acústico).*| [(\[][^()\[\]]*?(Deluxe|Platinum|Acoustic|Live|Ao vivo|Acústico|Version|Edition|From|Radio|ft\.|feat\.|Ft\.|Feat\.)[^()\[\]]*[)\]]|\s-\s((Single)|(EP))$", RegexOptions.Compiled);
+                // Remove matched patterns from SongName
+                var cleanedSongName = songRegex.Replace(info.SongName, "").Trim();
+                var songName = cleanedSongName;
+
 
                 //modified till here
 
@@ -126,7 +129,7 @@ namespace AMWin_RichPresence {
                     hasScrobbled = false;
                     logger?.Log($"[{serviceName} scrobbler] New Song: {lastSongID}");
 
-                    await UpdateNowPlaying(artist, album, info.SongName);
+                    await UpdateNowPlaying(artist, album, songName);
                     logger?.Log($"[{serviceName} scrobbler] Updated now playing: {lastSongID}");
                 } else {
                     elapsedSeconds += Constants.RefreshPeriod;
@@ -142,7 +145,7 @@ namespace AMWin_RichPresence {
 
                         try {
                             scrobbleInProgress = true;
-                            await ScrobbleSong(artist, album, info.SongName);
+                            await ScrobbleSong(artist, album, songName);
                             hasScrobbled = true;
                         } finally {
                             scrobbleInProgress = false;
