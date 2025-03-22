@@ -173,7 +173,7 @@ namespace AMWin_RichPresence {
 
             // TODO add support for multiple beta versions (i.e. b1 and b2)
             if (numverRemote > numverLocal || (numverRemote == numverLocal && verLocal.Contains('b') && !verRemote.Contains('b'))) {
-                var res = MessageBox.Show("A new update for AMWin-RP is available.\nWould you like to view the releases?", "New update available", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                var res = MessageBox.Show("A new update for Tree's AMWin-RP is available.\nWould you like to view the releases? (You better)", "New update available", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (res == MessageBoxResult.Yes) {
                     Process.Start(new ProcessStartInfo {
                         FileName = Constants.GithubReleasesUrl,
