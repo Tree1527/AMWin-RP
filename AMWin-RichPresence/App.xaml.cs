@@ -156,16 +156,17 @@ namespace AMWin_RichPresence {
         }
 
         internal async void CheckForUpdates() {
-            static int StringVerToInt(string v) {
-                var verStr = v[1..].Split("b")[0].Replace(".", "").PadRight(4, '0');
+            static int StringVerToInt(string v){
+                var verStr = v[1..].Split("-")[0].Replace(".", "").PadRight(5, '0');
                 return int.Parse(verStr);
             }
+
             Constants.HttpClient.DefaultRequestHeaders.Add("User-Agent", "AMWin-RP");
             var result = await Constants.HttpClient.GetStringAsync(Constants.GithubReleasesApiUrl);
             var json = JsonDocument.Parse(result);
 
             var verLocal = Constants.ProgramVersionBase;
-            var verRemote = json.RootElement.GetProperty("name").GetString()!;
+            var verRemote = json.RootElement.GetProperty("tag_name").GetString()!;
 
             var numverLocal = StringVerToInt(verLocal);
             var numverRemote = StringVerToInt(verRemote);

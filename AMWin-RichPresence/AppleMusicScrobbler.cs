@@ -1,4 +1,4 @@
-using IF.Lastfm.Core.Api;
+﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using MetaBrainz.ListenBrainz;
@@ -26,7 +26,7 @@ namespace AMWin_RichPresence {
 
     internal class AlbumCleaner {
 
-        private static readonly Regex AlbumCleanerRegex = new Regex(@"([/-] .*)? ?(Deluxe|Platinum|Acoustic|Acústico).*| [(\[][^()\[\]]*?(Deluxe|Platinum|Acoustic|Live|Ao vivo|Acústico|Version|Edition|From|Radio|ft\.|feat\.|Ft\.|Feat\.)[^()\[\]]*[)\]]|\s-\s((Single)|(EP))$", RegexOptions.Compiled);
+        private static readonly Regex AlbumCleanerRegex = new Regex(@"([/-] .*)? ?(Deluxe|Platinum|Acoustic|Acústico).*| [(\[][^()\[\]]*?(Deluxe|Platinum|Acoustic|Live|Ao vivo|Acústico|Version|Video Album|Edition|From|Radio|ft\.|feat\.|Ft\.|Feat\.)[^()\[\]]*[)\]]|\s-\s((Single)|(EP))$", RegexOptions.Compiled);
 
         public static string CleanAlbumName(string songName) {
             // Remove " - Single" and " - EP"
@@ -93,7 +93,7 @@ namespace AMWin_RichPresence {
 
                 //tree modified
                 var artists = await webScraper.GetArtistList();
-                var artistRegex = new Regex(@"([/-])?(,|&|\sx\s*|\sX\s*|ft|ft\.|Ft|Ft\.) (?!The creator|Hyde|Status|CLYDE).*");
+                var artistRegex = new Regex(@"([/-])?(,|&|\sx\s*|\sX\s*|ft|ft\.|Ft|Ft\.) (?!The creator|Hyde|Status|CLYDE|the Wicked).*");
 
                 var cleanedArtist = artistRegex.Replace(info.SongArtist, "").Trim();
 
@@ -111,7 +111,7 @@ namespace AMWin_RichPresence {
                 */
 
                 var song = info.SongName;
-                var songRegex = new Regex(@"([/-].*)? ?(Deluxe|Platinum|Acoustic|Acústico).*| [(\[][^()\[\]]*?(Deluxe|Platinum|Acoustic|Live|Ao vivo|Acústico|Version|Edition|From|Radio|ft\.|feat\.|Ft\.|Feat\.)[^()\[\]]*[)\]]|\s-\s((Single)|(EP))$", RegexOptions.Compiled);
+                var songRegex = new Regex(@"([/-].*)? ?(Deluxe|Platinum|Acoustic|Acústico).*| [(\[][^()\[\]]*?(Deluxe|Platinum|Acoustic|Live|Ao vivo|Acústico|Version|Video Album|Edition|From|Radio|ft\.|feat\.|Ft\.|Feat\.)[^()\[\]]*[)\]]|\s-\s((Single)|(EP))$", RegexOptions.Compiled);
                 // Remove matched patterns from SongName
                 var cleanedSongName = songRegex.Replace(info.SongName, "").Trim();
                 var songName = cleanedSongName;
