@@ -1,18 +1,18 @@
 # AMWin-RP
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/PKBeam/AMWin-RP/total) ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/PKBeam/AMWin-RP/latest/total)  
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/Tree1527/AMWin-RP/total) ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/Tree1527/AMWin-RP/latest/total)  
 
 A Discord Rich Presence client for Apple Music's native Windows app.  
 Last.FM scrobbling is also supported!
 
-[日本語 (Japanese README)](https://github.com/PKBeam/AMWin-RP/blob/master/README-JA.md)
+[日本語 (Japanese README)](https://github.com/Tree1527/AMWin-RP/blob/master/README-JA.md)
 
-![image](https://github.com/PKBeam/AMWin-RP/assets/18737124/dcc7dfa6-5504-4556-b62a-ab67cb0b0951)
+![image](https://github.com/Tree1527/AMWin-RP/assets/18737124/dcc7dfa6-5504-4556-b62a-ab67cb0b0951)
 
-![image](https://github.com/PKBeam/AMWin-RP/assets/18737124/34e87ee6-b30a-4d1c-9fe2-70af0d7bd7f8)
+![image](https://github.com/Tree1527/AMWin-RP/assets/18737124/34e87ee6-b30a-4d1c-9fe2-70af0d7bd7f8)
 
 ## Installation
 
-Releases can be found [here](https://github.com/PKBeam/AMWin-RP/releases).
+Releases can be found [here](https://github.com/Tree1527/AMWin-RP/releases).
 
 **Note**: AMWin-RP will run on Windows 10 21H1 or later, but the Apple Music app requires at least Windows 10 22H2. 
 
