@@ -6,9 +6,9 @@ Last.FM scrobbling is also supported!
 
 [日本語 (Japanese README)](https://github.com/Tree1527/AMWin-RP/blob/master/README-JA.md)
 
-![image](https://github.com/Tree1527/AMWin-RP/assets/18737124/dcc7dfa6-5504-4556-b62a-ab67cb0b0951)
+![image](https://github.com/PKBeam/AMWin-RP/assets/18737124/dcc7dfa6-5504-4556-b62a-ab67cb0b0951)
 
-![image](https://github.com/Tree1527/AMWin-RP/assets/18737124/34e87ee6-b30a-4d1c-9fe2-70af0d7bd7f8)
+![image](https://github.com/PKBeam/AMWin-RP/assets/18737124/34e87ee6-b30a-4d1c-9fe2-70af0d7bd7f8)
 
 ## Installation
 
